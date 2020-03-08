@@ -1,11 +1,19 @@
 import React from 'react';
-import { Typography } from '@material-ui/core';
+import { Typography, Grid, AppBar, Toolbar, Container } from '@material-ui/core';
 
 import Filters from './Filters';
 import SongList from './SongList';
 import songData from './SongData';
 import { matchDifficulty } from './util/matchDifficulty';
 import { usePersistedState } from './util/usePersistedState';
+import { formatInteger } from './util/formatNumber';
+
+const initialValues = {
+  difficulty: [1, songData.maxNumericDifficulty() + 1],
+  showNoteCounts: false,
+  artist: null,
+  platform: null,
+};
 
 // Renders a song list with interactive filters.
 // Manages the filter state.
@@ -16,10 +24,7 @@ export function FilterableSongList(props) {
   // 'uncontrolled'. We do it in a seperate step so we can support older
   // LocalStorage values even after adding new inputs.
   filters = {
-    difficulty: [1, songData.maxNumericDifficulty() + 1],
-    showNoteCounts: false,
-    artist: null,
-    platform: null,
+    ...initialValues,
     ...filters,
   };
 
@@ -27,6 +32,10 @@ export function FilterableSongList(props) {
     setFilters(prevState => {
       return { ...prevState, [name]: value };
     });
+  }
+
+  const handleFilterClear = () => {
+    setFilters(initialValues);
   }
 
   const filterSongs = (songs, filter) => {
@@ -95,9 +104,26 @@ export function FilterableSongList(props) {
   const { filtered, totalCount, filteredCount } = filterCollections(songData.collections(), filters);
   return (
     <>
-      <Filters onChange={handleFilterChange} filters={filters} />
-      <Typography>Showing {filteredCount} of {totalCount} songs</Typography>
-      <SongList collections={filtered} filters={filters} />
+      <AppBar position="fixed" color="secondary">
+        <Grid container>
+          <Grid item xs={12}>
+            <Filters onChange={handleFilterChange} onClear={handleFilterClear} filters={filters} />
+          </Grid>
+          <Grid item xs={12} style={{ marginTop: '-0.2em', paddingTop: '0.3em', paddingBottom: '0.2em' }}>
+            <Typography variant="caption">
+              Showing {
+                filteredCount === totalCount ? `${formatInteger(totalCount)}`
+                                             : `${formatInteger(filteredCount)} of ${formatInteger(totalCount)}`
+              } song{filteredCount === 1 ? '' : 's'}
+            </Typography>
+          </Grid>
+        </Grid>
+      </AppBar>
+      {/* extra Toolbar element so SongList is offset and they don't overlap */}
+      <Toolbar />
+      <Container>
+        <SongList collections={filtered} filters={filters} />
+      </Container>
     </>
   );
 }

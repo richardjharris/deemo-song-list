@@ -63,6 +63,10 @@ export default function Filters(props) {
     setDrawerOpen(open);
   }
 
+  const clearFilters = () => {
+    props.onClear();
+  }
+
   const difficultySlider = (
       <Slider
         id="difficulty-slider"
@@ -126,7 +130,7 @@ export default function Filters(props) {
             </Grid>
           </React.Fragment>);
         })}
-        <Grid item xs={12} align='center'>
+        <Grid item xs={6} align='center'>
             <FormControlLabel control={
               <Switch
                 checked={filters.showNoteCounts}
@@ -137,6 +141,12 @@ export default function Filters(props) {
             }
             label="Show note counts"
             />
+        </Grid>
+        <Grid item xs={6} align='center'>
+          <Button
+            onClick={clearFilters}
+            color="secondary"
+          >Clear filters</Button>
         </Grid>
       </Grid>
     </div>
@@ -152,6 +162,8 @@ export default function Filters(props) {
     <Button
       style={{width: '100%' }}
       onClick={toggleDrawer(true)}
+      variant="contained"
+      color="primary"
     >Open filters</Button>
   </>);
 }

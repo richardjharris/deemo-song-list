@@ -2,21 +2,11 @@
 
 * AutoSizer in use. revisit the divs maybe.
 
-* Filters are applied, but no mention of whether they're active or not.
-* No clear filter button.
-
- - maybe device should have its own bit (first 20% of the screen?)
-
-* 'Show note counts' should persist, and also be part of FilterableSongList
-  state. That'll make it easier to test.
-
 * Instead of a slider, simple dropdowns may be better for difficulty
 
 * Collection position indicators should consider device.
 
-* Sticky headers don't currently work.
-
-* Filters header isnot sticky either.
+* Sticky subheaders don't currently work.
 
  - maybe try to get open filters swipe to work
 

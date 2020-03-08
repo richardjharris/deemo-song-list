@@ -12,11 +12,8 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function SongRow(props) {
-  const song = props.song;
-  const filters = props.filters;
+function SongRow({ song, filters }) {
   const classes = useStyles();
-
   const secondary = song.artist + (filters.showNoteCounts ? ` (${song.time})` : '');
 
   return (
@@ -41,3 +38,5 @@ export default function SongRow(props) {
     </ListItem>
   );
 }
+
+export default SongRow;

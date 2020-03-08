@@ -56,7 +56,6 @@ export default function SongList(props) {
               <Divider />
             </li>
           ))}
-        )}
       </List>
       )}
     </AutoSizer>

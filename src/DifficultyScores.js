@@ -5,6 +5,7 @@ import { Typography } from '@material-ui/core';
 import chroma from 'chroma-js';
 
 import { matchDifficulty } from './util/matchDifficulty';
+import { formatInteger } from './util/formatNumber';
 
 const useStyles = makeStyles(theme => ({
   difficultySquare: {
@@ -59,15 +60,12 @@ export default function DifficultyScores(props) {
 
   if (showNoteCounts) {
     const countSquares = [0,1,2,3].filter(i => noteCounts[i] !== null).map((i) => {
-      let prettyCount = Number(noteCounts[i]).toLocaleString(
-        navigator.language, { minimumFractionDigits: 0 },
-      );
       let color = chroma(difficultyColors[i]).darken(1.5).css();
 
       return (<span key={i}
         className={classes.noteCount}
         style={{ color }}>
-          {prettyCount}
+          {formatInteger(noteCounts[i])}
         </span>);
     });
 
