@@ -74,8 +74,9 @@ export default function Filters(props) {
         marks={difficultySelectorMarks}
         valueLabelDisplay="off"
         min={1}
+        step={1}
         max={songData.maxNumericDifficulty() + 1}
-        onChangeCommitted={(_, value) => handleChange('difficulty', value)}
+        onChange={(_, value) => handleChange('difficulty', value)}
       />);
   const artistInput = (
     <Autocomplete

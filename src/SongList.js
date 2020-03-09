@@ -11,7 +11,6 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     backgroundColor: theme.palette.background.paper,
     position: 'relative',
-    overflow: 'auto',
   },
   listSection: {
     backgroundColor: 'inherit',
@@ -28,24 +27,19 @@ export default function SongList(props) {
   const filters = props.filters;
 
   return (
-    <List className={classes.root}>
-    {collections.map(collection => (
-      <li key={`collection-${collection.id}`}
-        className={classes.listSection}>
-        <ul className={classes.ul}>
-          <CollectionRow key={`crow-${collection.id}`}
-            collection={collection}></CollectionRow>
-          {collection.songs.map(song => (
-            <SongRow
-              key={`songrow-${song.id}`}
-              song={song}
-              filters={filters}
-            ></SongRow>
-          ))}
-        </ul>
-        <Divider />
-      </li>
-    ))}
+  <List className={classes.root}>
+    {collections.map(collection => (<>
+      <CollectionRow key={`crow-${collection.id}`}
+        collection={collection}></CollectionRow>
+      {collection.songs.map(song => (
+        <SongRow
+          key={`songrow-${song.id}`}
+          song={song}
+          filters={filters}
+        ></SongRow>
+      ))}
+      <Divider />
+    </>))}
   </List>
   );
 }

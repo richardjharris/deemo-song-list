@@ -38,8 +38,9 @@ function CollectionPositionBar(index, totalCollections) {
 export default function CollectionRow(props) {
   const collection = props.collection;
 
+  // Set background-color, otherwise sticky headers overlap
   return (
-    <ListSubheader>
+    <ListSubheader style={{background: 'white', paddingBottom: '1em'}}>
       {collection.name}
       {CollectionPositionBar(collection.index, collection.totalCollections)}
     </ListSubheader>
