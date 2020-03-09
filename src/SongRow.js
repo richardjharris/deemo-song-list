@@ -15,6 +15,7 @@ const useStyles = makeStyles(theme => ({
 function SongRow({ song, filters }) {
   const classes = useStyles();
   const secondary = song.artist + (filters.showNoteCounts ? ` (${song.time})` : '');
+  console.log(`Rendering ${song.name}`);
 
   return (
     <ListItem divider>
