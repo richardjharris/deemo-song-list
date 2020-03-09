@@ -3,8 +3,9 @@ import songData from './SongData';
 import React, { useState } from 'react';
 import {
   Switch, Grid, TextField, Slider, Button, ButtonGroup, Typography,
-  FormControlLabel, Drawer, makeStyles
+  FormControlLabel, Drawer
 } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import { Autocomplete } from '@material-ui/lab';
 
 const _buildDifficultySelectorMarks = () => {
@@ -41,7 +42,6 @@ export default function Filters(props) {
   }
 
   // Checkboxes are uncontrolled, so we manage the state.
-  // TODO use state from props instead.
   const handleCheckbox = name => event => {
     const checked = event.target.checked;
     props.onChange(name, !!checked);

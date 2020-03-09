@@ -1,14 +1,17 @@
 ## TODO LIST
 
-* AutoSizer in use. revisit the divs maybe.
-
-* Instead of a slider, simple dropdowns may be better for difficulty
+* Get AutoSizer to work, perhaps
+* Use caching or otherwise improve performance when filtering
+* Slider is bad UX atm, e.g. drag frog left side and it ends up moving
+  the right one instead. No feedback when dragging.
 
 * Collection position indicators should consider device.
 
 * Sticky subheaders don't currently work.
 
  - maybe try to get open filters swipe to work
+
+* Build size is quite big (500kb ish) Consider tree-shaking.
 
 ## create-react-app scripts
 
