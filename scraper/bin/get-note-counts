@@ -1,0 +1,45 @@
+#!/usr/bin/env perl
+use v5.16;
+use warnings;
+
+use URI::Escape qw(uri_escape);
+use LWP::Simple qw(get);
+
+# Crawls the deemo wiki and downloads step counts for each song.
+# Accepts the same input as parse-wiki-song list for the song list.
+
+while (<>) {
+    chomp;
+    /^\|\[\[(.*?)\]\]/ or next;
+    my $song = $1;
+
+    $song =~ s/&size\(\d+\)\{''(.*?)''\};/$1/g;
+
+    $song =~ s/^(.*?)>(.*?)/$2/;   # first item is label, second is wiki name
+    my $orig_song = $1;
+
+    warn "Got song: $song\n";
+    
+    my $page = get("https://wikiwiki.jp/deemo/?cmd=edit&page=" . uri_escape($song));
+    $page =~ /\|~NOTES\|(.*?)\|\n/;
+
+    my $orig_notes = $1;
+    my $notes = $orig_notes;
+    $notes =~ s/CENTER://g;
+    $notes =~ s/&amp;color\(.*?\)\{(.*?)\};/$1/g;
+    $notes =~ s/''(.*?)''/$1/g;
+
+    my @notes = split /[|]/, $notes;
+    for my $note (@notes) {
+        $note =~ s/^C//;  # seems to appear sometimes
+        $note =~ s/^\s*//;
+        $note =~ s/\s*$//;
+        if ($note !~ /^\d+$/) {
+            die "failed to parse notes for [$song] ($notes) ($orig_notes)\n";
+        }
+    }
+    $notes = join("\t", @notes);
+
+    print $song, "\t", $notes, "\n";
+    print $orig_song, "\t", $notes, "\n" if $orig_song;
+}

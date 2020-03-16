@@ -1,0 +1,273 @@
+#!/usr/bin/env perl
+
+=pod
+
+Script to read the Deemo wiki song list (ordered by collection)
+and return JSON data. 
+
+The song list should be cropped to start at
+
+ *Deemo's collection Vol.1A [#d6129d19]
+
+and end at the final song of the final collection, e.g.
+
+ |[[Sincerity]]|2|6|9|Yamajet|2:24|146||
+
+The first argument to the script should be dump of the platform
+availability table, which will be merged into the output to specify
+which platforms support each collection.
+
+The second should be a TSV of note counts dumped via a separate
+script.
+
+=cut
+
+use v5.16;
+use autodie qw(:io);
+use warnings;
+use utf8::all;
+
+use Readonly;
+use Data::Dump qw(dd);
+use List::MoreUtils qw(zip);
+use JSON::XS;
+
+Readonly my @all_platforms => (qw(iOS Android au Amazon Vita Switch));
+
+# Remove &color(#...){text} and other wiki markup
+sub clean {
+    my $str = shift;
+    $str =~ s/&&&(.*?)&&&/$1/g;
+    $str =~ s/%%%(.*?)%%%/$1/g;
+    $str =~ s/&color\(.*?\)\{(.*)\};/$1/g;
+    $str =~ s/&size\(.*?\)\{(.*)\};/$1/g;
+    $str =~ s/''(.*?)''/$1/g;
+    $str =~ s/&br;/ /g;
+    $str =~ s/\[\[ ([^>]+) .*? \]\] /$1/gx;  # wikilink
+    return $str;
+}
+
+# Split a wiki table row
+sub split_row {
+    my $row = shift;
+    my @columns = split /[|]/, $row;
+    # Remove empty leading column
+    shift @columns;
+    return @columns;
+}
+
+# Normalise the various styles of BPM value
+sub normalise_bpm {
+    my $bpm = shift;
+    if (!$bpm or $bpm eq '*') {
+        # Normalise 'no BPM' to undef
+        return undef;
+    }
+    elsif ($bpm =~ /^ (\d+) [-⇔→～] (\d+) $/x) {
+        # Normalise as a range
+        return "$1-$2";
+    }
+    elsif ($bpm =~ /^ (\d+) [-⇔→～] \*? $/x) {
+        # The top end is missing (?) just use the lower value.
+        return $1;
+    }
+    elsif ($bpm =~ /^(\d+(?:\.\d+)?)$/) {
+        return $1;
+    }
+    elsif ($bpm =~ /^ca\.(\d+)$/) {
+        return $1;
+    }
+    die "cannot parse bpm '$bpm'";
+}
+
+# Load the platform availablity table
+sub load_platform_info {
+    my $filename = shift;
+    my @header;
+    my %info;
+    open my $fh, '<', $filename;
+    while (<$fh>) {
+        chomp;
+        if (/^[|]~/) {
+            @header = map { s/^~//; clean($_) } split_row($_);
+        }
+        elsif (/^[|]\[/) {
+            /\[\[(.*?)>.*?\#(.*?)\]\]/ or die "no id [$_]";
+            my ($name, $id) = ($1, $2);
+            $name = clean($name);
+            my @values = map { clean($_) } split_row($_);
+            my %values = zip @header, @values;
+            $values{id} = $id;
+            for my $platform (@all_platforms) {
+                my $val = $values{$platform} // '';
+                # Some values have a (1) or (-1) after - remove those
+                $val =~ s/\(.*?\)$//;
+                $info{$id}{$platform} = $val;
+                $info{$name}{$platform} = $val;
+
+            }
+        }
+    }
+    return %info;
+}
+
+# Load note count info
+sub load_note_count_info {
+    my $file = shift;
+    my %info;
+    open my $fh, '<', $file;
+    while (<$fh>) {
+        chomp;
+        my ($song, @counts) = split /\t/;
+        $info{$song} = \@counts;
+    }
+    return %info;
+}
+
+# First argument specifies a dump of the platform availability table
+# for each collection, which we merge into the output.
+my $platform_wiki_file = shift @ARGV or die "missing platform wiki dump";
+my %platform_info = load_platform_info($platform_wiki_file);
+
+my $note_count_file = shift @ARGV or die "missing note count file";
+my %note_counts = load_note_count_info($note_count_file);
+
+my @data;
+my $collection;
+my @header;
+my $song_count;
+my %artist_info;
+my %seen_collection_ids;
+
+# Song-specific platform information
+my %song_platform_info = (
+    Altale => {
+        # No longer available on Amazon (ver.2.1+)
+        "Deemo's collection Vol.2" => ['Android', 'Switch', 'au', 'iOS'],
+        # Only available in this collection on Vita
+        "Shattered Memories" => ['Vita'],
+    },
+);
+
+while (<>) {
+    chomp;
+    if (/^ \* (.*?) \s+ \[\#(.*?)\] /x) {
+        # New collection
+        my ($name, $id) = ($1, $2);
+        $collection = {
+            name => clean($name),
+            id => $id,
+            songs => [],
+        };
+
+        if (defined $seen_collection_ids{$id}) {
+            warn "Collection ID seen twice: [$seen_collection_ids{$id}] and [$name]\n";
+        }
+        else {
+            $seen_collection_ids{$id} = $name;
+        }
+
+        # Join platform info by both ID and collection name, as sometimes the ID is different
+        # Some IDs have multiple collections of the same name (!!)
+        if (exists $platform_info{$name}) {
+            $collection->{platforms} = $platform_info{$name};
+        }
+        elsif (exists $platform_info{$id}) {
+            $collection->{platforms} = $platform_info{$id};
+        }
+        else {
+            warn "no platform info for [$id] {$name}\n";
+        }
+        push @data, $collection;
+    }
+    elsif (/^\*/) {
+        die "unknown header: $_";
+    }
+    elsif (/^\|\~/) {
+        # Parse the table header
+        @header = map { s/^~//; clean($_) } split_row($_);
+    }
+    elsif (/^\|/) {
+        # Table row (song entry)
+        my @values = map { clean($_) } split_row($_);
+        # Convert to a hash
+        my %values = zip @header, @values;
+
+        my @difficulty = map { $values{$_} }
+            qw(Easy Normal Hard Extra);
+        # Normalise difficulty
+        @difficulty = map { ($_ // '') eq '-' ? undef : $_ } @difficulty;
+
+        my $bpm = normalise_bpm($values{BPM});
+
+        my $artist = $values{Artist};
+        # Normalise case of artists who appear with multiple cases
+        $artist = 'Sakuzyo' if lc $artist eq 'sakuzyo';
+        $artist = 'Ice'     if lc $artist eq 'ice';
+        $artist = 'Nicode'  if lc $artist eq 'nicode';
+        $artist = 'Kiva'    if lc $artist eq 'kiva';
+        $artist = 'KillerBlood' if lc $artist eq 'killerblood';
+        $artist = 'Cranky' if lc $artist eq 'cranky';
+
+        $artist =~ s/Nicode/Nicode/ig;
+
+        my $name = $values{曲名};
+        my $time = $values{TIME};
+        my $notes = $values{備考} // '';
+
+        my %song_data = (
+            name => $name,
+            difficulty => \@difficulty,
+            artist => $artist,
+            time => $time,
+            bpm => $bpm,
+            notes => $notes,
+        );
+
+        # Add song-specific platform support data if available
+        if (my $supported_platforms = $song_platform_info{$name}{$collection->{name}}) {
+            my $info = {};
+            for my $platform (@all_platforms) {
+                if (grep { $_ eq $platform } @$supported_platforms) {
+                    $info->{$platform} = '◎';
+                }
+                else {
+                    $info->{$platform} = '×';
+                }
+            }
+            $song_data{platforms} = $info;
+        }
+
+        # Add note counts if available. These should be normalised to match the
+        # difficulty table
+        if (my $note_info = $note_counts{$name}) {
+            my @keys = grep { exists $values{$_} } qw(Easy Normal Hard Extra);
+            my @values = @$note_info;
+            my %note_info = zip @keys, @values;
+            $song_data{notecounts} = [ map { $note_info{$_} } qw(Easy Normal Hard Extra) ];
+        }
+
+        push @{$collection->{songs}}, \%song_data;
+        $song_count++;
+        # Keep track of artist info so we can sanity check later
+        $artist_info{lc $artist}{total}++;
+        $artist_info{lc $artist}{original} = $artist;
+        $artist_info{lc $artist}{forms}{$artist}++;
+    }
+}
+
+# Perform a sanity check on artist data
+for my $key (keys %artist_info) {
+    my $info = $artist_info{$key};
+    if ($info->{total} == 1) {
+        warn "Artist only seen once: $info->{original}\n";
+    }
+    elsif (keys %{$info->{forms}} > 1) {
+        warn "Artist found with multiple cases: " . join(', ', sort keys %{$info->{forms}}), "\n";
+    }
+}
+
+
+# Dump the parsed data
+say JSON::XS->new->pretty->encode(\@data);
+warn "Found $song_count songs across " . @data . " collections\n";

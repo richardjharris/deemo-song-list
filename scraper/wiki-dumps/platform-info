@@ -1,0 +1,85 @@
+----
+*(プレイ可能)楽曲数一覧 [#y5097f08]
+#region
+&color(Red){◎};は無料、○は有料でプレイ可能、&color(Blue){×};はプレイ不可。数字はその曲数だけプレイ出来る。
+
+|>|>|>|>|>|>|>|>|>|CENTER:|c
+|~BOOK|~ver.|~曲数|~体験版|~iOS|~Android|~au|~Amazon|~Vita|~Switch|
+|||>|>|>|>|>|>|>|CENTER:COLOR(Red):|c
+|[[Deemo's collection Vol.1A>#d6129d19]]|1.0～1.4|13|''12''|◎|◎|◎|◎|◎|◎|
+|[[Deemo's collection Vol.1B>#sf7021cc]]|1.0～1.5|14|''2''|◎|◎|◎|◎|◎|◎|
+|[[Deemo's collection Vol.2>#q2c2bdd2]]|2.0～2.1|11|&color(Blue){×};|◎|◎|◎|''10''|◎(-1)|◎|
+|[[Shattered Memories>#fa69e15b]]|2.2～3.1|22|&color(Blue){×};|◎|◎|''14''|&color(Blue){×};|''14''(+1)|18|
+|[[Shattered Memories 2>#nd6a34a5]]|3.2～3.6|11|&color(Blue){×};|◎|◎|||||
+|||CENTER:|CENTER:COLOR(Blue):|>|CENTER:|CENTER:COLOR(Blue):|CENTER:COLOR(Blue):|CENTER:|CENTER:COLOR(Red):|c
+|[[Samsara collection>#Samsara]]|3.0|10|×|○|○|×|×|○|◎|
+|[[Etude collection>#Etude]]|3.0|15|×|○|○|×|×|○|◎|
+|||>|>|>|>|>|>|CENTER:COLOR(Red):|CENTER:|c
+|[[Collaboration collection>#ue4edd95]]&br;(Brave Frontier selection)|1.5～3.3|9|◎|◎|◎|''4''|''3''||''3''|
+|>|>|>|>|>|>|>|>|>||
+|||CENTER:|CENTER:COLOR(Blue):|>|CENTER:|CENTER:COLOR(Red):|>|CENTER:|CENTER:COLOR(Red):|c
+|[[Rayark selection Vol.1>#w0869e52]]|1.0～1.4|''6''|×|○|○|◎|○|○|◎|
+|[[Rayark selection Vol.2>#s27f5347]]|1.0|5|×|○|○|◎|○|○|◎|
+|[[MILI collection>#pa8fada6]]|1.4|5|×|○|○|◎|○|○|◎|
+|[[V.K collection>#a3b2f285]]|1.4|5|×|○|○|◎|○|○|◎|
+|>|>|>|>|>|>|>|>|>|>|
+|||CENTER:|CENTER:COLOR(Blue):|>|CENTER:|CENTER:COLOR(Red):|>|CENTER:|CENTER:COLOR(Red):|c
+|[[Brian Crain collection>#aed2295e]]|1.5|5|×|○|○|&color(Blue){×};|○|○|◎|
+|[[Eshen Chen collection Vol.1 Transmission>#c83ac944]]|1.5|5|×|○|○|◎|○|○|◎|
+|[[Rayark selection Vol.3>#o6657092]]|1.5|5|×|○|○|◎|○|○|◎|
+|[[Cytus selection Vol.1>#v26de684]]|1.5|5|×|○|○|''4''|''4''|○|◎|
+|[[Cytus selection Vol.2>#d3e0a63c]]|1.5|5|×|○|○|◎|○|○|◎|
+|[[Knight Iris collection>#zb6e192e]]|1.5|5|×|○|○|◎|○|○|◎|
+|>|>|>|>|>|>|>|>|>|CENTER:|c
+|~BOOK|~ver.|~曲|~体|~iOS|~Android|~au|~Amazon|~Vita|~Switch|
+|||CENTER:|CENTER:COLOR(Blue):|>|CENTER:|CENTER:COLOR(Red):|>|CENTER:|CENTER:COLOR(Red):|c
+|[[Knight Rosabell collection>#s1d9afa7]]|2.0|5|×|○|○|◎|○|○|◎|
+|[[Aioi collection>#za9ad38d]]|2.0|5|×|○|○|◎|○|○|◎|
+|[[M2U × Nicode collection>#w906aa5e]]|2.0|5|×|○|○|◎|○|○|◎|
+|[[N.M.S.T. collection>#db197a3c]]|2.0|5|×|○|○|◎|○|○|◎|
+|||CENTER:|CENTER:COLOR(Blue):|>|CENTER:|CENTER:COLOR(Red):|CENTER:COLOR(Blue):|CENTER:|CENTER:COLOR(Red):|c
+|[[MILI collection Vol.2>#ud5823e9]]|2.1|5|×|○|○|◎|×|○|◎|
+|[[AD:PIANO collection>#g02db1c3]]|2.2|5|×|○|○|◎|×|○|◎|
+|[[Rabpit collection>#rd6bee97]]|2.2|5|×|○|○|◎|×|○|◎|
+|>|>|>|>|>|>|>|>|>|>|
+|[[L: The Lower collection>#xd83dae5]]|2.3|5|×|○|○|◎|×|○|◎|
+|[[L: The Upper collection>#yb18f912]]|2.3|5|×|○|○|◎|×|○|◎|
+|[[RAC collection #1>#v766e36e]]|2.3|5|×|○|○|◎|×|○|◎|
+|[[RAC collection #2>#oddfca15]]|2.3|5|×|○|○|◎|×|○|◎|
+|[[Sakuzyo collection>#ib8199af]]|2.3|5|×|○|○|◎|×|○|◎|
+|>|>|>|>|>|>|>|>|>|>|
+|[[DS:PIANO collection>#x0b35dc0]]|2.4|5|×|○|○|◎|×|○|◎|
+|[[RAC collection #3>#pbadd9d4]]|2.4|5|×|○|○|◎|×|○|◎|
+|[[RAC collection #4>#h318f09e]]|2.4|5|×|○|○|◎|×|○|◎|
+|[[RAC collection #5>#q07e2c3b]]|2.4|5|×|○|○|◎|×|○|◎|
+|[[Timeline collection>#g492b328]]|2.4|5|×|○|○|◎|×|○|◎|
+|[[RAC collection #6>#ne5c74c2]]|3.1|5|×|○|○|×|×|○|◎|
+|[[MILI collection Vol.3>#g3372487]]|3.1|5|×|○|○|×|×|○|◎|
+|[[Cranky collection>#q229f60f]]|3.1|5|×|○|○||×|○|◎|
+|[[Yamajet collection>#uce8fce4]]|3.1|5|×|○|○||×|○|◎|
+|>|>|>|>|>|>|>|>|>|CENTER:|c
+|~BOOK|~ver.|~曲|~体|~iOS|~Android|~au|~Amazon|~Vita|~Switch|
+|||CENTER:|CENTER:COLOR(Blue):|>|CENTER:|CENTER:COLOR(Red):|>|CENTER:|CENTER:COLOR(Red):|c
+|[[Ice collection>#hcb4a17d]]|3.2|5|×|○|○||||◎|
+|[[M2U × Nicode collection Vol.2>#o090499b]]|3.2|''6''|×|○|○||||◎|
+|[[Funkot collection>#]]|3.2|5|×|○|○||||◎|
+|[[Feryquitous collection>#]]|3.2|5|×|○|○||||◎|
+|[[Vocal collection>#]]|3.3|5|×|○|○|||||
+|[[Team Grimoire collection>#]]|3.3|5|×|○|○|||||
+|[[AD:PIANO collection 2>#]]|3.3|5|×|○|○|||||
+|[[Kobayashi collection>#Kobayashi]]|3.5|5|×|○|○|||||
+|[[Aioi collection vol.2>#Aioi2]]|3.5|5|×|○|○|||||
+|>|>|>|>|>|>|>|>|||
+|[[Book of A.>VITA版追加曲一覧#d6129d19]]|Vita/3.4|5|×|○|○|×|×|×|×|
+|[[Book of C.>VITA版追加曲一覧#oee7de06]]|Vita/3.4|''3''|×|○|○|×|×|×|×|
+|[[Duet collection Vol.1>VITA版追加曲一覧#c1230d12]]|Vita|1|×|×|×|×|×|◎(10)|×|
+|>|>|>|>|>|>|>|>|CENTER:||c
+|~BOOK|~ver.|~曲|~体|~iOS|~Android|~au|~Amazon|~Vita|~Switch|
+|>|>|>|>|>|>|>|>|CENTER:COLOR():|c
+
+#br
+#endregion
+----
+*コメント [#sf52a8c3]
+#pcomment(曲名リスト/コメント,10,reply)
+
