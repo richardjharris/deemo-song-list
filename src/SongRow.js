@@ -16,8 +16,7 @@ const useStyles = makeStyles(theme => ({
 function SongRow({ song, showNoteCounts, favorite, onToggleFavorite }) {
   const classes = useStyles();
   const secondary = song.artist + (showNoteCounts ? ` (${song.time})` : '');
-  console.log(`Rendering ${song.name}`);
-  console.log(`favorite=${favorite}`);
+  console.log(`Rendering ${song.name} fav=${favorite}`);
 
   return (
     <ListItem divider>
@@ -49,4 +48,10 @@ function SongRow({ song, showNoteCounts, favorite, onToggleFavorite }) {
   );
 };
 
-export default React.memo(SongRow);
+function areEqual(prev, next) {
+  return prev.song.id === next.song.id
+    && prev.favorite === next.favorite
+    && prev.showNoteCounts === next.showNoteCounts;
+}
+
+export default React.memo(SongRow, areEqual);

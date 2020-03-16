@@ -42,24 +42,27 @@ export default function SongList(props) {
 
   const onToggleFavorite = useCallback((songId) => {
     setFuncs.toggle(songId);
+  // setFuncs should not be added to the dependency list, as it
+  // undoes SongRow's memoization.
   }, []);
 
+  // TODO add back className={className}
   return (
-    <List className={className}>
-      {collections.map(collection => (<>
-        <CollectionRow key={`crow-${collection.id}`}
-          collection={collection}></CollectionRow>
-        {collection.songs.map(song => (
+    <List>
+      {collections.map(collection => [
+        <CollectionRow key={`collection-row-${collection.id}`}
+          collection={collection}></CollectionRow>,
+        collection.songs.map(song => (
           <SongRow
-            key={`songrow-${song.id}`}
+            key={`song-row-${song.id}`}
             song={song}
             showNoteCounts={filters.showNoteCounts}
             favorite={isFavorite.has(song.id)}
             onToggleFavorite={onToggleFavorite}
           ></SongRow>
-        ))}
-        <Divider />
-      </>))}
+        )),
+        <Divider key={`divider-${collection.id}`} />
+      ].flat())}
     </List>
   );
 }

@@ -10,10 +10,15 @@ import { formatInteger } from './util/formatNumber';
 const useStyles = makeStyles(theme => ({
   difficultySquare: {
     ...theme.typography.button,
-    paddingLeft: theme.spacing(1),
-    paddingRight: theme.spacing(1),
     margin: theme.spacing(1),
-    border: '2px solid transparent',
+    border: '1px solid transparent',
+    width: '1.8rem',
+    maxWidth: '1.8rem',
+    height: '1.8rem',
+    maxHeight: '1.8rem',
+    textAlign: 'center',
+    overflow: 'hidden',
+    lineHeight: '1.8rem',
   },
   difficultySquareWithNoteCount: {
     marginTop: theme.spacing(0.2),
@@ -30,7 +35,7 @@ const hardGold = '#f6dd58';
 const extraWhite = 'white';
 
 const difficultyColors = [easyGreen, normalBlue, hardGold, extraWhite];
-const darkColors = difficultyColors.map(c => chroma(c).darken(1.5).css());
+const darkColors = difficultyColors.map(c => chroma(c).darken(1.2).css());
 
 function DifficultyScores(props) {
   const { scores, noteCounts, showNoteCounts } = props;
@@ -46,9 +51,17 @@ function DifficultyScores(props) {
         className += ` ${classes.difficultySquareWithNoteCount}`;
       }
 
+      let style = {
+        backgroundColor: difficultyColors[i],
+        borderColor: darkColors[i],
+      }
+      if (scores[i].length > 2) {
+        style.fontSize = '50%';
+      }
+
       return (<Typography key={i}
         className={className}
-        style={{ backgroundColor: difficultyColors[i] }}>
+        style={style}>
         {scores[i]}
       </Typography>);
   });
