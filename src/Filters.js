@@ -161,7 +161,7 @@ export default function Filters(props) {
       onClose={toggleDrawer(false)}
     >{filterGrid}</Drawer>
     <Button
-      style={{width: '100%' }}
+      style={{ width: '100%' }}
       onClick={toggleDrawer(true)}
       variant="contained"
       color="primary"

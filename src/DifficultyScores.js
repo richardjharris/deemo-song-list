@@ -4,7 +4,7 @@ import { Typography } from '@material-ui/core';
 
 import chroma from 'chroma-js';
 
-import { matchDifficulty } from './util/matchDifficulty';
+import { difficultyAsNumber } from './util/matchDifficulty';
 import { formatInteger } from './util/formatNumber';
 
 const useStyles = makeStyles(theme => ({
@@ -13,7 +13,7 @@ const useStyles = makeStyles(theme => ({
     paddingLeft: theme.spacing(1),
     paddingRight: theme.spacing(1),
     margin: theme.spacing(1),
-    border: '1px solid transparent',
+    border: '2px solid transparent',
   },
   difficultySquareWithNoteCount: {
     marginTop: theme.spacing(0.2),
@@ -30,21 +30,16 @@ const hardGold = '#f6dd58';
 const extraWhite = 'white';
 
 const difficultyColors = [easyGreen, normalBlue, hardGold, extraWhite];
+const darkColors = difficultyColors.map(c => chroma(c).darken(1.5).css());
 
-export default function DifficultyScores(props) {
-  const { scores, filter, noteCounts, showNoteCounts } = props;
+function DifficultyScores(props) {
+  const { scores, noteCounts, showNoteCounts } = props;
   const classes = useStyles();
 
   // First build the difficulty squares
   const diffSquares = [0,1,2,3].filter(i => scores[i] !== null).map((i) => {
-      let className = `${classes.difficultySquare}`;
-      let border = '2px solid transparent';
-
-      // If a difficulty filter is applied, highlight the difficulties
-      // that match the filter.
-      if (filter && matchDifficulty(scores[i], filter)) {
-        border = '2px solid ' + chroma(difficultyColors[i]).darken(3).css();
-      }
+      let className = classes.difficultySquare
+                    + ` difficulty-${difficultyAsNumber(scores[i])}`;
 
       if (showNoteCounts) {
         // Reduce bottom padding
@@ -53,14 +48,14 @@ export default function DifficultyScores(props) {
 
       return (<Typography key={i}
         className={className}
-        style={{ backgroundColor: difficultyColors[i], border: border }}>
+        style={{ backgroundColor: difficultyColors[i] }}>
         {scores[i]}
       </Typography>);
   });
 
   if (showNoteCounts) {
     const countSquares = [0,1,2,3].filter(i => noteCounts[i] !== null).map((i) => {
-      let color = chroma(difficultyColors[i]).darken(1.5).css();
+      let color = darkColors[i];
 
       return (<span key={i}
         className={classes.noteCount}
@@ -84,4 +79,6 @@ export default function DifficultyScores(props) {
     // Render a simple list
     return diffSquares;
   }
-}
+};
+
+export default React.memo(DifficultyScores);

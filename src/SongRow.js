@@ -1,7 +1,8 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Grid,  Typography, ListItem, ListItemText, ListItemSecondaryAction } from '@material-ui/core';
-
+import { Grid, IconButton, Typography, ListItem, ListItemText, ListItemSecondaryAction, ListItemIcon } from '@material-ui/core';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import DifficultyScores from './DifficultyScores';
 
 const useStyles = makeStyles(theme => ({
@@ -12,24 +13,32 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function SongRow({ song, filters }) {
+function SongRow({ song, showNoteCounts, favorite, onToggleFavorite }) {
   const classes = useStyles();
-  const secondary = song.artist + (filters.showNoteCounts ? ` (${song.time})` : '');
+  const secondary = song.artist + (showNoteCounts ? ` (${song.time})` : '');
   console.log(`Rendering ${song.name}`);
+  console.log(`favorite=${favorite}`);
 
   return (
     <ListItem divider>
+      <ListItemIcon>
+        <IconButton
+          onClick={() => onToggleFavorite(song.id)}
+          aria-label={favorite ? "mark as favorite" : "unmark as favorite"}
+        >
+          {favorite ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+        </IconButton>
+      </ListItemIcon>
       <ListItemText primary={song.name} secondary={secondary} />
       <ListItemSecondaryAction>
         <Grid container direction="column">
           <Grid container spacing={1} direction="row" justify="flex-end">
             <DifficultyScores
-              filter={filters.difficulty}
               scores={song.difficulty}
               noteCounts={song.notecounts}
-              showNoteCounts={filters.showNoteCounts} />
+              showNoteCounts={showNoteCounts} />
           </Grid>
-          {filters.showNoteCounts ? null : (
+          {showNoteCounts ? null : (
             <Grid container spacing={1} direction="row" justify="flex-end">
               <Typography className={classes.time}>{song.time}</Typography>
             </Grid>
@@ -38,6 +47,6 @@ function SongRow({ song, filters }) {
       </ListItemSecondaryAction>
     </ListItem>
   );
-}
+};
 
-export default SongRow;
+export default React.memo(SongRow);

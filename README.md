@@ -1,9 +1,12 @@
 ## TODO LIST
 
+* Use CSS for difficulty score highlighting, so React doesn't need to
+  rebuild anything. Cache SongRow. Use the two-argument form of React.memo
+  so we only rebuild when song name changes, or showNoteCounts changes.
+
 * Get AutoSizer to work, perhaps
-* Use caching or otherwise improve performance when filtering
-* Slider is bad UX atm, e.g. drag frog left side and it ends up moving
-  the right one instead. No feedback when dragging.
+
+* Slider may be better as two dropdowns.
 
 * Collection position indicators should consider device.
 
