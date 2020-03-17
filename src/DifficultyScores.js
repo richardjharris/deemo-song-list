@@ -41,6 +41,8 @@ function DifficultyScores(props) {
   const { scores, noteCounts, showNoteCounts } = props;
   const classes = useStyles();
 
+  console.log("Rendering difficulty scores", scores);
+
   // First build the difficulty squares
   const diffSquares = [0,1,2,3].filter(i => scores[i] !== null).map((i) => {
       let className = classes.difficultySquare
