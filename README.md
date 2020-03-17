@@ -1,10 +1,11 @@
 ## TODO LIST
 
-* Use CSS for difficulty score highlighting, so React doesn't need to
-  rebuild anything. Cache SongRow. Use the two-argument form of React.memo
-  so we only rebuild when song name changes, or showNoteCounts changes.
+* Improve janky scrolling.
 
-* Get AutoSizer to work, perhaps
+* There are probably still performance issues (re-rendering)
+
+* Use CSS for difficulty score highlighting, so React doesn't need to
+  rebuild anything.
 
 * Slider may be better as two dropdowns.
 
@@ -13,8 +14,6 @@
 * Sticky subheaders don't currently work.
 
  - maybe try to get open filters swipe to work
-
-* Build size is quite big (500kb ish) Consider tree-shaking.
 
 ## create-react-app scripts
 

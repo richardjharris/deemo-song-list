@@ -19,7 +19,9 @@ function SongRow({ song, showNoteCounts, favorite, onToggleFavorite }) {
   console.log(`Rendering ${song.name} fav=${favorite}`);
 
   return (
-    <ListItem divider>
+    // <div> is required to avoid bullet points appearing when we are using
+    // AutoSizer.
+    <ListItem divider ContainerComponent="div">
       <ListItemIcon>
         <IconButton
           onClick={() => onToggleFavorite(song.id)}
