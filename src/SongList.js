@@ -27,6 +27,20 @@ const cellMeasurerCache = new CellMeasurerCache({
   fixedWidth: true,
   defaultHeight: 90,
 });
+let items = [];
+
+const renderRow = ({ index, parent, key, style }) => (
+  <CellMeasurer
+    key={key}
+    cache={cellMeasurerCache}
+    parent={parent}
+    columnIndex={0}
+    rowIndex={index}
+    keyMapper={(index) => items[index].key}
+  >
+    <div style={style}>{items[index]}</div>
+  </CellMeasurer>
+);
 
 export default function SongList(props) {
   const classes = useStyles();
@@ -52,7 +66,7 @@ export default function SongList(props) {
     // undoes SongRow's memoization.
   }, []);
 
-  const items = collections.map(collection => [
+  items = collections.map(collection => [
     <CollectionRow key={`collection-row-${collection.id}`}
       collection={collection}></CollectionRow>,
     collection.songs.map(song => (
@@ -66,18 +80,6 @@ export default function SongList(props) {
     )),
     <Divider key={`divider-${collection.id}`} />
   ].flat()).flat();
-
-  const renderRow = ({ index, parent, key, style }) => (
-    <CellMeasurer
-      key={key}
-      cache={cellMeasurerCache}
-      parent={parent}
-      columnIndex={0}
-      rowIndex={index}
-    >
-      <div style={style}>{items[index]}</div>
-    </CellMeasurer>
-  );
 
   const renderList = () => (
     <WindowScroller scrollElement={window}>

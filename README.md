@@ -1,6 +1,7 @@
 ## TODO LIST
 
 * Improve janky scrolling.
+* Clicking star for favourite scrolls up to top.
 
 * There are probably still performance issues (re-rendering)
 
@@ -14,6 +15,8 @@
 * Sticky subheaders don't currently work.
 
  - maybe try to get open filters swipe to work
+
+* Line up difficulties consistently.
 
 ## create-react-app scripts
 
