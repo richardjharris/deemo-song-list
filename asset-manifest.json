@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/deemo-song-list/static/css/main.d1b05096.chunk.css",
+    "main.js": "/deemo-song-list/static/js/main.2efff94e.chunk.js",
+    "main.js.map": "/deemo-song-list/static/js/main.2efff94e.chunk.js.map",
+    "runtime-main.js": "/deemo-song-list/static/js/runtime-main.842773b1.js",
+    "runtime-main.js.map": "/deemo-song-list/static/js/runtime-main.842773b1.js.map",
+    "static/js/2.2811dc8c.chunk.js": "/deemo-song-list/static/js/2.2811dc8c.chunk.js",
+    "static/js/2.2811dc8c.chunk.js.map": "/deemo-song-list/static/js/2.2811dc8c.chunk.js.map",
+    "index.html": "/deemo-song-list/index.html",
+    "precache-manifest.5ff5324f0d61278ff3b3efa4c7ec50a1.js": "/deemo-song-list/precache-manifest.5ff5324f0d61278ff3b3efa4c7ec50a1.js",
+    "service-worker.js": "/deemo-song-list/service-worker.js",
+    "static/css/main.d1b05096.chunk.css.map": "/deemo-song-list/static/css/main.d1b05096.chunk.css.map",
+    "static/js/2.2811dc8c.chunk.js.LICENSE.txt": "/deemo-song-list/static/js/2.2811dc8c.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.842773b1.js",
+    "static/js/2.2811dc8c.chunk.js",
+    "static/css/main.d1b05096.chunk.css",
+    "static/js/main.2efff94e.chunk.js"
+  ]
+}
