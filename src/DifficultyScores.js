@@ -94,6 +94,7 @@ function DifficultyScores(props) {
     // Render a simple list
     return diffSquares;
   }
-};
+}
 
-export default React.memo(DifficultyScores);
+const ex = React.memo(DifficultyScores);
+export default ex;

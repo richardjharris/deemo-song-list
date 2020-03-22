@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Typography, Grid, AppBar, Toolbar, Container } from '@material-ui/core';
 
 import Filters from './Filters';
@@ -11,6 +11,7 @@ import { formatInteger } from './util/formatNumber';
 const initialValues = {
   difficulty: [1, songData.maxNumericDifficulty() + 1],
   showNoteCounts: false,
+  showFavorites: false,
   artist: null,
   platform: null,
 };
@@ -19,6 +20,7 @@ const initialValues = {
 // Manages the filter state.
 export function FilterableSongList(props) {
   let [filters, setFilters] = usePersistedState('deemoFilters', {});
+  let [favorites, setFavorites] = usePersistedState('deemoFavorites', {});
 
   // Provide defaults, otherwise React considers the inputs to be
   // 'uncontrolled'. We do it in a seperate step so we can support older
@@ -28,20 +30,38 @@ export function FilterableSongList(props) {
     ...filters,
   };
 
-  const handleFilterChange = (name, value) => {
+  const handleFilterChange = useCallback((name, value) => {
     setFilters(prevState => {
       return { ...prevState, [name]: value };
     });
-  }
+  }, [setFilters]);
 
-  const handleFilterClear = () => {
+  const handleFilterClear = useCallback(() => {
     setFilters(initialValues);
-  }
+  }, [setFilters]);
+
+  const handleToggleFavorite = useCallback((songID) => {
+    setFavorites(favorites => {
+      console.log("toggle favorite", songID);
+      let newFavorites = Object.assign({}, favorites);
+      if (favorites[songID]) {
+        delete newFavorites[songID];
+      }
+      else {
+        newFavorites[songID] = true;
+      }
+      return newFavorites;
+    });
+  }, [setFavorites]);
 
   const filterSongs = (songs, filter) => {
     let deviceSongTotal = 0;
 
     const filteredSongs = songs.filter((song) => {
+      if (filters.showFavorites && !favorites[song.id]) {
+        return false;
+      }
+
       // When showing song count (e.g. '12 of 300 songs shown') we don't
       // include songs from other devices, so filter that first.
       if (filter.platform) {
@@ -122,7 +142,11 @@ export function FilterableSongList(props) {
       {/* extra Toolbar element so SongList is offset and they don't overlap */}
       <Toolbar />
       <Container>
-        <SongList collections={filtered} filters={filters} />
+        <SongList
+          collections={filtered}
+          filters={filters}
+          favorites={favorites}
+          onToggleFavorite={handleToggleFavorite} />
       </Container>
     </>
   );

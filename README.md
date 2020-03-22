@@ -1,9 +1,10 @@
 ## TODO LIST
 
-* Improve janky scrolling.
-* Clicking star for favourite scrolls up to top.
+* Good UI is to show the updated filters without having to actually re-filter and re-paint the
+  song list immediately. It should be pushed into the background. Debounce maybe.
+  React 'Time Slicing' can help with this. (not out yet)
 
-* There are probably still performance issues (re-rendering)
+* Still a little bit slow.
 
 * Use CSS for difficulty score highlighting, so React doesn't need to
   rebuild anything.
@@ -13,8 +14,6 @@
 * Collection position indicators should consider device.
 
 * Sticky subheaders don't currently work.
-
- - maybe try to get open filters swipe to work
 
 * Line up difficulties consistently.
 

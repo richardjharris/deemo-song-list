@@ -1,6 +1,6 @@
 import songData from './SongData';
 
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   Switch, Grid, TextField, Slider, Button, ButtonGroup, Typography,
   FormControlLabel, Drawer
@@ -32,42 +32,41 @@ const useStyles = makeStyles({
   }
 });
 
-export default function Filters(props) {
+export default function Filters({ filters, onChange, onClear }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const filters = props.filters;
   const classes = useStyles();
+  console.log('rendering filters');
 
-  const handleChange = (name, value) => {
-    props.onChange(name, value);
-  }
+  const handleChange = useCallback((name, value) => {
+    onChange(name, value);
+  }, [onChange]);
 
   // Checkboxes are uncontrolled, so we manage the state.
-  const handleCheckbox = name => event => {
+  const handleCheckbox = useCallback(name => event => {
     const checked = event.target.checked;
-    props.onChange(name, !!checked);
-  }
+    onChange(name, !!checked);
+  }, [onChange]);
 
-  const selectPlatform = (platform) => {
+  const selectPlatform = useCallback((platform) => {
     if (filters.platform === platform) {
       // Unset platform i.e. toggle the selected button
       platform = null;
     }
-    props.onChange('platform', platform);
-  }
+    onChange('platform', platform);
+  }, [onChange, filters.platform]);
 
-  const toggleDrawer = (open) => event => {
+  const toggleDrawer = useCallback((open) => event => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
 
     setDrawerOpen(open);
-  }
+  }, [setDrawerOpen]);
 
-  const clearFilters = () => {
-    props.onClear();
-  }
+  // TODO this used to be a proper callback
+  const clearFilters = onClear;
 
-  const difficultySlider = (
+   const difficultySlider = (
       <Slider
         id="difficulty-slider"
         value={filters.difficulty}
@@ -131,7 +130,7 @@ export default function Filters(props) {
             </Grid>
           </React.Fragment>);
         })}
-        <Grid item xs={6} align='center'>
+        <Grid item xs={4} align='center'>
             <FormControlLabel control={
               <Switch
                 checked={filters.showNoteCounts}
@@ -143,7 +142,19 @@ export default function Filters(props) {
             label="Show note counts"
             />
         </Grid>
-        <Grid item xs={6} align='center'>
+        <Grid item xs={4} align='center'>
+            <FormControlLabel control={
+              <Switch
+                checked={filters.showFavorites}
+                onChange={handleCheckbox('showFavorites')}
+                value="showFavorites"
+                color="primary"
+              />
+            }
+            label="Show favourites only"
+            />
+        </Grid>
+        <Grid item xs={4} align='center'>
           <Button
             onClick={clearFilters}
             color="secondary"
